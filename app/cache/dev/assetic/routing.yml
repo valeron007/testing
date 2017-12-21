@@ -1,0 +1,5 @@
+_assetic:
+    resource: .
+    type: assetic
+_app:
+    resource: /home/valeron/space/vhosts/sym.dev/www/testing/app/config/routing_dev.yml
