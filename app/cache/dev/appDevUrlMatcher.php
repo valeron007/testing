@@ -125,6 +125,87 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return $this->mergeDefaults(array_replace($matches, array('_route' => 'a2x_blog_default_index')), array (  '_controller' => 'A2x\\BlogBundle\\Controller\\DefaultController::indexAction',));
         }
 
+        // 
+        if (rtrim($pathinfo, '/') === '') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not_;
+            }
+
+            if (substr($pathinfo, -1) !== '/') {
+                return $this->redirect($pathinfo.'/', '');
+            }
+
+            return array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::indexAction',  '_route' => '',);
+        }
+        not_:
+
+        // _create
+        if ($pathinfo === '/') {
+            if ($this->context->getMethod() != 'POST') {
+                $allow[] = 'POST';
+                goto not__create;
+            }
+
+            return array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::createAction',  '_route' => '_create',);
+        }
+        not__create:
+
+        // _new
+        if ($pathinfo === '/new') {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not__new;
+            }
+
+            return array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::newAction',  '_route' => '_new',);
+        }
+        not__new:
+
+        // _show
+        if (preg_match('#^/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not__show;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => '_show')), array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::showAction',));
+        }
+        not__show:
+
+        // _edit
+        if (preg_match('#^/(?P<id>[^/]++)/edit$#s', $pathinfo, $matches)) {
+            if (!in_array($this->context->getMethod(), array('GET', 'HEAD'))) {
+                $allow = array_merge($allow, array('GET', 'HEAD'));
+                goto not__edit;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => '_edit')), array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::editAction',));
+        }
+        not__edit:
+
+        // _update
+        if (preg_match('#^/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+            if ($this->context->getMethod() != 'PUT') {
+                $allow[] = 'PUT';
+                goto not__update;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => '_update')), array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::updateAction',));
+        }
+        not__update:
+
+        // _delete
+        if (preg_match('#^/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+            if ($this->context->getMethod() != 'DELETE') {
+                $allow[] = 'DELETE';
+                goto not__delete;
+            }
+
+            return $this->mergeDefaults(array_replace($matches, array('_route' => '_delete')), array (  '_controller' => 'A2x\\BlogBundle\\Controller\\PostController::deleteAction',));
+        }
+        not__delete:
+
         // _welcome
         if (rtrim($pathinfo, '/') === '') {
             if (substr($pathinfo, -1) !== '/') {

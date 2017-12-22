@@ -164,10 +164,11 @@ class Post{
      *
      * @param \DateTime $created
      * @return Post
+	 * @ORM\PrePersist()
      */
-    public function setCreated($created)
+    public function setCreated()
     {
-        $this->created = $created;
+        $this->created = new \DateTime('now');
     
         return $this;
     }
@@ -187,10 +188,11 @@ class Post{
      *
      * @param \DateTime $updated
      * @return Post
+	 * @ORM\PreUpdate()
      */
-    public function setUpdated($updated)
+    public function setUpdated()
     {
-        $this->updated = $updated;
+        $this->updated = new \DateTime('now');
     
         return $this;
     }

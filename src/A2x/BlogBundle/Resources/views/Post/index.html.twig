@@ -1,0 +1,72 @@
+{% extends '::base.html.twig' %}
+
+{% block body -%}
+
+    {% for entity in entities %}
+        <div class="blog-post">
+            <h2 class="blog-post-title">{{ entity.title }}</h2>
+            <p class="blog-post-meta">{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %} by
+                <a href="{{ path('_show', { 'id': entity.id }) }}">{{ entity.id }}</a>
+            </p>
+
+            <p>{{ entity.description }}</p>
+
+            <p>{{ entity.text }}</p>
+            <ul>
+                <li>
+                    <a href="{{ path('_show', { 'id': entity.id }) }}">show</a>
+                </li>
+                <li>
+                    <a href="{{ path('_edit', { 'id': entity.id }) }}">edit</a>
+                </li>
+            </ul>
+
+        </div><!-- /.blog-post -->
+    {% endfor %}
+        <ul>
+            <li>
+                <a href="{{ path('_new') }}">
+                    Create a new entry
+                </a>
+            </li>
+        </ul>
+    <nav>
+        <ul class="pager">
+            <li>
+                <a href="#">Previous</a>
+            </li>
+            <li>
+                <a href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+        {#{% for entity in entities %}#}
+            {#<tr>#}
+                {#<td><a href="{{ path('_show', { 'id': entity.id }) }}">{{ entity.id }}</a></td>#}
+                {#<td>{{ entity.title }}</td>#}
+                {#<td>{{ entity.description }}</td>#}
+                {#<td>{{ entity.text }}</td>#}
+                {#<td>{{ entity.published }}</td>#}
+                {#<td>{% if entity.created %}{{ entity.created|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+                {#<td>{% if entity.updated %}{{ entity.updated|date('Y-m-d H:i:s') }}{% endif %}</td>#}
+                {#<td>#}
+                {#<ul>#}
+                    {#<li>#}
+                        {#<a href="{{ path('_show', { 'id': entity.id }) }}">show</a>#}
+                    {#</li>#}
+                    {#<li>#}
+                        {#<a href="{{ path('_edit', { 'id': entity.id }) }}">edit</a>#}
+                    {#</li>#}
+                {#</ul>#}
+                {#</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+
+        {#<ul>#}
+            {#<li>#}
+                {#<a href="{{ path('_new') }}">#}
+                    {#Create a new entry#}
+                {#</a>#}
+            {#</li>#}
+        {#</ul>#}
+    {% endblock %}
